@@ -1,0 +1,90 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.User
+@model UserAddMoneyViewModel
+
+@{ 
+    this.ViewData["Title"] = "Add money";
+}
+
+<h3>Cash Deposit</h3>
+<hr />
+
+<form method="post" asp-controller="User" asp-action="AddMoney">
+    <div class="add-money-search">
+
+        <label>Find user by EGN: </label>
+        <input class="form-control" type="text" asp-for="EGN" />
+
+        <div></div>
+        <div class="d-flex justify-content-end">
+            <input type="submit" value="Search" class="btn custom-orange-bg-color" style="min-width: 100px" />
+        </div>
+
+        <div></div>
+        <span asp-validation-for="EGN" class="text-danger"></span>
+    </div>
+</form>
+
+@if (Model.HasData == true)
+{
+    <div class="custom-add-money-details">
+
+        <label>User's EGN:</label>
+        <input value="@Model.EGN" disabled>
+
+        <label>User's first name:</label>
+        <input value="@Model.FirstName" disabled>
+
+        <label>User's middle name:</label>
+        <input value="@Model.MiddleName" disabled>
+
+        <label>User's last name:</label>
+        <input value="@Model.LastName" disabled>
+    </div>
+
+    @if (Model.UserAccounts.Count() > 0)
+    {
+        <div class="tableFixHead">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Account Name</th>
+                        <th>Account Type Name</th>
+                        <th>Available</th>
+                        <th>Blocked Аmount</th>
+                        <th>Balance</th>
+                        <th>IBAN</th>
+                        <th>Currency</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var account in Model.UserAccounts)
+                    {
+                        <tr>
+                            <td>@account.Name</td>
+                            <td>@account.AccountTypeName</td>
+                            <td class="text-right">@account.Available</td>
+                            <td class="text-right">@account.BlockedАmount</td>
+                            <td class="text-right">@account.Balance</td>
+                            <td>@account.IBAN</td>
+                            <td>@account.CurrencyAbbreviation</td>
+                            <td>
+                                <div class="d-flex justify-content-end">
+                                    <form method="get" asp-controller="User" asp-action="AddMoneyToAccount" class="ml-2">
+                                        <input type="hidden" value="@Model.EGN" name="EGN" />
+                                        <input type="hidden" value="@account.Id" name="id" />
+                                        <input type="submit" value="Add Money" class="btn custom-orange-bg-color" style="min-width: 100px" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div>No accounts found!</div>
+    }
+}

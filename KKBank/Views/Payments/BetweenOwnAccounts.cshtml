@@ -1,0 +1,324 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Payments
+@model PaymentsBetweenOwnAccountsViewModel
+
+@{
+    this.ViewData["Title"] = "Payment order";
+    var fromAccounts = new List<SelectListItem>();
+    fromAccounts.Add(new SelectListItem(){
+        Text = "Select from account",
+        Value = "0"
+    });
+    fromAccounts.AddRange(this.Model.FromAccounts.Select(x => new SelectListItem(x.Value, x.Key)).ToList());
+
+
+    var toAccounts = new List<SelectListItem>();
+    toAccounts.Add(new SelectListItem()
+    {
+        Text = "Select to account",
+        Value = "0"
+    });
+    toAccounts.AddRange(this.Model.ToAccounts.Select(x => new SelectListItem(x.Value, x.Key)).ToList());
+}
+
+<div class="d-flex custom-h3-orange-color">
+    <h3 class="mb-3">Between Own Accounts</h3>
+    <div class="position-relative">
+        <i class="fas fa-info-circle mt-2 ml-2" id="icon"></i>
+        <div id="message">The payment order will be executed immediately.</div>
+    </div>
+</div>
+
+<div class="payment-document-style">
+    <form method="post" asp-controller="Payments" asp-action="BetweenOwnAccounts">
+        <div class="row">
+            <div class="col-12 d-flex flex-column justify-content-center">
+                <div class="form-group d-flex align-items-center">
+                    <label asp-for="FromAccountId">From Account</label>
+                    <select asp-for="FromAccountId" asp-items="fromAccounts" class="form-control" onchange="checkAccount(this)"></select>
+                </div>
+                <div class="form-group d-flex align-items-center">
+                    <label asp-for="ToAccountId">To Account</label>
+                    <select asp-for="ToAccountId" asp-items="toAccounts" class="form-control" onchange="checkAccount(this)"></select>
+                </div>
+
+                <span id="accountsValidation" class="custom_payment_validation"></span>
+                <span asp-validation-for="FromAccountId" class="custom_payment_validation"></span>
+                <span asp-validation-for="ToAccountId" class="custom_payment_validation"></span>
+
+                <div class="form-group d-flex align-items-center">
+                    <label>Amount / Currency</label>
+                    <div class="amount-currency__subgrid">
+                        <div>
+                            <input asp-for="AmountFrom" class="form-control text-right" value="0.00" onblur="AmountFromToFixed(this)" onchange="AmountFromExchange(this)" />
+                        </div>
+                        <div class="ml-1">
+                            <input id="CurrencyFrom" class="form-control" style="background-color: #f5f5f5;" readonly value="BGN" />
+                        </div>
+                        <span id="buyText" class="text-center currencyExchange__displayHidden" style="line-height: 36px">Buy</span>
+                        <div id="rateFrom" class="currencyExchange__displayHidden">
+                            <input id="rateFromInput" type="text" class="form-control" style="background-color: #f5f5f5;" readonly />
+                        </div>
+                    </div>
+                </div>
+
+                <div id="rateExchange" class="form-group d-flex align-items-center currencyExchange__displayHidden">
+                    <label>Amount / Currency</label>
+                    <div class="amount-currency__subgrid">
+                        <div>
+                            <input asp-for="AmountTo" class="form-control text-right" value="0.00" onblur="AmountToToFixed(this)" onchange="AmountToExchange(this)" />
+                        </div>
+                        <div class="ml-1">
+                            <input id="CurrencyTo" class="form-control" style="background-color: #f5f5f5;" readonly />
+                        </div>
+                        <span class="text-center" style="line-height: 36px">Sell</span>
+                        <div>
+                            <input id="rateToInput" type="text" class="form-control" style="background-color: #f5f5f5;" readonly />
+                        </div>
+                    </div>
+                </div>
+
+                <span asp-validation-for="AmountFrom" class="text-danger custom_payment_validation"></span>
+                <span asp-validation-for="AmountTo" class="text-danger custom_payment_validation"></span>
+
+                <div class="form-group d-flex align-items-center">
+                    <label asp-for="PaymentDetails">Details of Payment</label>
+                    <div style="width: 350px">
+                        <input asp-for="PaymentDetails" class="form-control" type="text" />
+                        <span asp-validation-for="PaymentDetails" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <input type="submit" class="btn custom-orange-bg-color align-self-end" value="Pay" style="min-width: 120px" /> 
+                </div>
+            </div>
+        </div>
+        <div asp-validation-summary="All"></div>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        function AmountFromToFixed(el) {
+            var amountValue = Number(el.value.replace(',', '.'));
+
+            if (isNaN(amountValue)) {
+                el.value = "0.00";
+            } else {
+                el.value = amountValue.toFixed(2);
+            }
+        }
+
+        function AmountToToFixed(el) {
+            var amountValue = Number(el.value.replace(',', '.'));
+
+            if (isNaN(amountValue)) {
+                el.value = "0.00";
+            } else {
+                el.value = amountValue.toFixed(2);
+            }
+        }
+
+        function AmountFromExchange(el) {
+            var amountTo = document.getElementById("AmountTo");
+            var textContentFromAcc = document.getElementById("FromAccountId")[document.getElementById("FromAccountId").selectedIndex].textContent;
+            var textContentToAcc = document.getElementById("ToAccountId")[document.getElementById("ToAccountId").selectedIndex].textContent;
+
+            var currFrom = textContentFromAcc.split('(')[1].split(' ')[1].substring(0, 3);
+            var currTo = textContentToAcc.split('(')[1].split(' ')[1].substring(0, 3);
+
+            var exchangeAmount = CurrencyConverter(el.value, currFrom, currTo, true);
+            amountTo.value = exchangeAmount;
+        }
+
+        function AmountToExchange(el) {
+            var amountFrom = document.getElementById("AmountFrom");
+
+            var textContentFromAcc = document.getElementById("FromAccountId")[document.getElementById("FromAccountId").selectedIndex].textContent;
+            var textContentToAcc = document.getElementById("ToAccountId")[document.getElementById("ToAccountId").selectedIndex].textContent;
+
+            var currFrom = textContentFromAcc.split('(')[1].split(' ')[1].substring(0, 3);
+            var currTo = textContentToAcc.split('(')[1].split(' ')[1].substring(0, 3);
+
+            var exchangeAmount = CurrencyConverter(el.value, currTo, currFrom, false);
+            amountFrom.value = exchangeAmount;
+        }
+
+        function checkAccount(el) {
+            var fromAccDiv = document.getElementById("FromAccountId");
+            var fromAccDivIndex = document.getElementById("FromAccountId").selectedIndex;
+            var toAccDiv = document.getElementById("ToAccountId");
+            var toAccDivIndex = document.getElementById("ToAccountId").selectedIndex;
+            var accountsValidation = document.getElementById("accountsValidation");
+            var currencyFrom = document.getElementById("CurrencyFrom");
+            var currencyTo = document.getElementById("CurrencyTo");
+
+            var textContentFromAcc = fromAccDiv[fromAccDivIndex].textContent;
+            var textContentToAcc = toAccDiv[toAccDivIndex].textContent;
+
+            var rateExchange = document.getElementById("rateExchange");
+            var buyText = document.getElementById("buyText");
+            var rateFrom = document.getElementById("rateFrom");
+
+            var rateFromInput = document.getElementById("rateFromInput");
+            var rateToInput = document.getElementById("rateToInput");
+
+            document.getElementById("AmountFrom").value = "0.00";
+            document.getElementById("AmountTo").value = "0.00";
+
+            if (fromAccDivIndex != 0 && toAccDivIndex != 0) {
+                if (fromAccDivIndex == toAccDivIndex) {
+                    accountsValidation.textContent = "Accounts must be different!";
+                    hideCurrencyExchangeElements(rateExchange, buyText, rateFrom);
+                } else {
+                    accountsValidation.textContent = "";
+                    var currFrom = textContentFromAcc.split('(')[1].split(' ')[1].substring(0, 3);
+                    var currTo = textContentToAcc.split('(')[1].split(' ')[1].substring(0, 3);
+                    if (currFrom != currTo) {
+                        displayCurrencyExchangeElements(rateExchange, buyText, rateFrom);
+                        if (currFrom == "BGN") {
+                            rateFromInput.value = "1.0000000";
+                            if (currTo == "EUR") {
+                                rateToInput.value = "1.9600000";
+                            } else if (currTo == "USD") {
+                                rateToInput.value = "1.6420000";
+                            }
+                        } else if (currFrom == "EUR") {
+                            rateFromInput.value = "1.9510000";
+                            if (currTo == "BGN") {
+                                rateToInput.value = "1.0000000";
+                            } else if (currTo == "USD") {
+                                rateToInput.value = "1.6420000";
+                            }
+                        } else if (currFrom == "USD") {
+                            rateFromInput.value = "1.5819000";
+                            if (currTo == "BGN") {
+                                rateToInput.value = "1.0000000";
+                            } else if (currTo == "EUR") {
+                                rateToInput.value = "1.9600000";
+                            }
+                        }
+
+                        currencyFrom.value = currFrom;
+                        currencyTo.value = currTo;
+                    }
+                    else {
+                        hideCurrencyExchangeElements(rateExchange, buyText, rateFrom);
+                    }
+                }
+            } else {
+                accountsValidation.textContent = "";
+                hideCurrencyExchangeElements(rateExchange, buyText, rateFrom);
+            }
+
+            if (fromAccDivIndex != 0) {
+                currencyFrom.value = textContentFromAcc.split('(')[1].split(' ')[1].substring(0, 3);
+            }
+
+            if (toAccDivIndex != 0) {
+                currencyTo.value = textContentToAcc.split('(')[1].split(' ')[1].substring(0, 3);
+            }
+        }
+
+        function displayCurrencyExchangeElements(rateExchange, buyText, rateFrom) {
+            if (rateExchange.classList.contains("currencyExchange__displayHidden")) {
+                rateExchange.classList.remove("currencyExchange__displayHidden");
+                rateExchange.classList.add("currencyExchange__displayBlock");
+            }
+
+            if (buyText.classList.contains("currencyExchange__displayHidden")) {
+                buyText.classList.remove("currencyExchange__displayHidden");
+                buyText.classList.add("currencyExchange__displayBlock");
+            }
+
+            if (rateFrom.classList.contains("currencyExchange__displayHidden")) {
+                rateFrom.classList.remove("currencyExchange__displayHidden");
+                rateFrom.classList.add("currencyExchange__displayBlock");
+            }
+        }
+
+        function hideCurrencyExchangeElements(rateExchange, buyText, rateFrom) {
+            if (rateExchange.classList.contains("currencyExchange__displayBlock")) {
+                rateExchange.classList.remove("currencyExchange__displayBlock");
+                rateExchange.classList.add("currencyExchange__displayHidden");
+            }
+
+            if (buyText.classList.contains("currencyExchange__displayBlock")) {
+                buyText.classList.remove("currencyExchange__displayBlock");
+                buyText.classList.add("currencyExchange__displayHidden");
+            }
+
+            if (rateFrom.classList.contains("currencyExchange__displayBlock")) {
+                rateFrom.classList.remove("currencyExchange__displayBlock");
+                rateFrom.classList.add("currencyExchange__displayHidden");
+            }
+        }
+
+        function CurrencyConverter(inAmount, currFrom, currTo, isFirstInput) {
+            if (isNaN(inAmount)) {
+                return "";
+            }
+
+            inAmount = Number(inAmount);
+            currFrom = currFrom.toString();
+            currTo = currTo.toString();
+
+            let outAmount = 0;
+            if (isFirstInput == true) {
+                if (currFrom == "BGN") {
+                    if (currTo == "BGN") {
+                        outAmount = inAmount * 1.0000000;
+                    } else if (currTo == "EUR") {
+                        outAmount = inAmount / 1.9600000;
+                    } else if (currTo == "USD") {
+                        outAmount = inAmount / 1.6420000;
+                    }
+                } else if (currFrom == "EUR") {
+                    if (currTo == "EUR") {
+                        outAmount = inAmount * 1.0000000;
+                    } else if (currTo == "BGN") {
+                        outAmount = inAmount * 1.9510000;
+                    } else if (currTo == "USD") {
+                        outAmount = inAmount * 1.1880000;
+                    }
+                } else if (currFrom == "USD") {
+                    if (currTo == "USD") {
+                        outAmount = inAmount * 1.0000000;
+                    } else if (currTo == "BGN") {
+                        outAmount = inAmount * 1.5819000;
+                    } else if (currTo == "EUR") {
+                        outAmount = inAmount * 0.8060000;
+                    }
+                }
+            } else {
+                if (currFrom == "BGN") {
+                    if (currTo == "BGN") {
+                        outAmount = inAmount * 1.0000000;
+                    } else if (currTo == "EUR") {
+                        outAmount = inAmount / 1.9510000;
+                    } else if (currTo == "USD") {
+                        outAmount = inAmount / 1.5819000;
+                    }
+                } else if (currFrom == "EUR") {
+                    if (currTo == "EUR") {
+                        outAmount = inAmount * 1.0000000;
+                    } else if (currTo == "BGN") {
+                        outAmount = inAmount * 1.9600000; //
+                    } else if (currTo == "USD") {
+                        outAmount = inAmount * 1.2390000;
+                    }
+                } else if (currFrom == "USD") {
+                    if (currTo == "USD") {
+                        outAmount = inAmount * 1.0000000;
+                    } else if (currTo == "BGN") {
+                        outAmount = inAmount * 1.6420000; //
+                    } else if (currTo == "EUR") {
+                        outAmount = inAmount * 0.8420000;
+                    }
+                }
+            }
+
+            let res = outAmount.toFixed(2);
+            return res;
+        }
+    </script>
+}

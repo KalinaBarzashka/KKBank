@@ -1,0 +1,60 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Request
+@model EditRequestViewModel
+
+@{
+    this.ViewData["Title"] = "Edit Request";
+    var currencyItems = this.Model.CurrencyItems.Select(x => new SelectListItem(x.Value, x.Key));
+}
+
+<h3 class="text-center">Edit Request</h3>
+
+<div>
+    <form method="post" asp-controller="Request" asp-action="EditRequest" class="col-md-6 offset-md-3 custom-edit-request">
+        <label>Request Type</label>
+        <input value="@Model.RequestTypeName" disabled>
+
+        <label>Account Type</label>
+        <input value="@Model.AccountTypeName" disabled>
+
+        @if (Model.IsDelete)
+        {
+            <label>Account Name</label>
+            <input value="@Model.AccountName" disabled>
+
+            <label asp-for="Description"></label>
+            <input asp-for="Description" class="form-control" value="@Model.Description" />
+
+            <label>Currency</label>
+            <input value="@Model.CurrencyName" disabled>
+        }
+        else
+        {
+            <label asp-for="AccountName"></label>
+            <input asp-for="AccountName" class="form-control" value="@Model.AccountName" />
+
+            <label asp-for="CurrencyId"></label>
+            <select asp-for="CurrencyId" asp-items="currencyItems" class="form-control"></select>
+        }
+
+        <label>Created On</label>
+        <input value="@Model.CreatedOn.ToString("dd/MM/yyyy HH:mm:ss")" disabled>
+
+        <label>Last Modified On</label>
+        <input value="@Model.ModifiedOn" disabled>
+
+        <label>Status</label>
+        <input value="@Model.StatusName" disabled>
+
+        <div></div>
+
+        <div class="d-flex justify-content-end">
+            <input type="hidden" asp-for="Id" value="@Model.Id" />
+            <input type="hidden" asp-for="RequestTypeName" value="@Model.RequestTypeName" />
+            <input type="submit" value="Edit" class="btn custom-orange-bg-color align-self-end" style="min-width: 100px;" />
+        </div>
+
+        <span asp-validation-for="AccountName" class="text-danger"></span>
+        <span asp-validation-for="Description" class="text-danger"></span>
+        <span asp-validation-for="CurrencyId" class="text-danger"></span>
+    </form>    
+</div>

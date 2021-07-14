@@ -1,0 +1,142 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Account
+@model AccountsViewModel
+@{
+    this.ViewData["Title"] = "Accounts";
+    var userId = this.ViewData["UserId"] as string;
+}
+
+<h3>Account Balance <i class="fas fa-money-check-alt"></i></h3>
+<hr />
+
+@if (this.Model.Accounts.Count() > 0)
+{
+    <ul class="custom-accordion">
+        @foreach (var account in this.Model.Accounts)
+        {
+            <li class="custom-accordion__item">
+                <div class="custom-accordion__btn" onclick="fToggleAccordion(this)">
+                    <div class="d-flex">
+                        <div class="d-flex flex-column justify-content-between pr-4">
+                            <div class="amount">@account.Available</div>
+                            <div>
+                                <span class="sub">Наличност</span>
+                                <span class="ccy">@account.CurrencyAbbreviation</span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between">
+                            <div class="title">@account.Name</div>
+                            <div class="iban">@account.IBAN</div>
+                        </div>
+                    </div>
+                    <svg viewBox="0 0 26 26" class="custom-accordion__close-icon closed">
+                        <path d="M10.5 9.3L1.8 0.5 0.5 1.8 9.3 10.5 0.5 19.3 1.8 20.5 10.5 11.8 19.3 20.5 20.5 19.3 11.8 10.5 20.5 1.8 19.3 0.5 10.5 9.3Z"></path>
+                    </svg>
+                </div>
+                <div class="custom-accordion__panel closed">
+                    <div class="pb-4">
+                        <div class="custom-accordion__panel-grid">
+                            <div>Account Name</div>
+                            <div>@account.Name</div>
+                        </div>
+                        <div class="custom-accordion__panel-grid">
+                            <div>Account Type</div>
+                            <div>@account.AccountTypeName</div>
+                        </div>
+                        <div class="custom-accordion__panel-grid">
+                            <div>Currency</div>
+                            <div>@account.CurrencyAbbreviation</div>
+                        </div>
+                        <div class="custom-accordion__panel-grid">
+                            <div>Available</div>
+                            <div>@account.Available</div>
+                        </div>
+                        <div class="custom-accordion__panel-grid">
+                            <div>Blocked amount</div>
+                            <div>@account.BlockedАmount</div>
+                        </div>
+                        <div class="custom-accordion__panel-grid">
+                            <div>Balance</div>
+                            <div>@account.Balance</div>
+                        </div>
+                        <div class="custom-accordion__panel-grid">
+                            <div>IBAN</div>
+                            <div>@account.IBAN</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+
+    <div class="text-right">
+        <button onclick="showExportOptions(this)" type="button" class="btn custom-orange-bg-color">Export To Excel</button>
+        <form method="get">
+            <ul class="dropdown-list">
+                <li>
+                    <input type="submit" asp-controller="Account" asp-action="ExportAll" value="Export all accounts" onclick="hideExportOptions(this)" />
+                </li>
+                <li>
+                    <input type="submit" asp-controller="Account" asp-action="ExportCurrentPage" asp-route-id="@Model.PageNumber" value="Export current page" onclick="hideExportOptions(this)" />
+                </li>
+            </ul>
+        </form>
+    </div>
+
+    <hr />
+    <partial name="_PagingPartial" model="@Model" />
+}
+else
+{
+    <div>No accounts yet? Create account <a asp-controller="Account" asp-action="Create">here</a>!</div>
+}
+
+@section Scripts{
+    <script>
+        function fToggleAccordion(el) {
+            var li = el.parentElement;
+            var svg = li.getElementsByTagName("svg")[0];
+            var panel = li.children[1];
+
+            if (svg.classList.contains("closed")) {
+                svg.classList.remove("closed");
+            } else {
+                svg.classList.add("closed");
+            }
+
+            if (panel.classList.contains("closed")) {
+                panel.classList.remove("closed");
+            } else {
+                panel.classList.add("closed");
+            }
+        }
+
+        var accordionItems = document.getElementsByClassName("custom-accordion__item");
+        for (var i = 0; i < accordionItems.length; i++) {
+            var grids = accordionItems[i].getElementsByClassName("custom-accordion__panel-grid");
+
+            for (var j = 0; j < grids.length; j += 2) {
+                var grid = grids[j];
+                grid.classList.add("even");
+            }
+        }
+
+        function showExportOptions(el) {
+            var form = el.parentElement;
+            var ul = form.getElementsByTagName("ul")[0];
+            if (ul.classList.contains("active")) {
+                ul.classList.remove("active");
+            } else {
+                ul.classList.add("active");
+            }
+        }
+
+        function hideExportOptions(el) {
+            var ul = el.parentElement.parentElement;
+            if (ul.classList.contains("active")) {
+                ul.classList.remove("active");
+            } else {
+                ul.classList.add("active");
+            }
+        }
+    </script>
+}

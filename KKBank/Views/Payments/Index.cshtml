@@ -1,0 +1,59 @@
+﻿@{ 
+    this.ViewData["Title"] = "Payments";
+}
+
+<h3>Payment Orders <i class="fas fa-handshake"></i></h3>
+
+<div class="custom-card-container">
+    <div class="custom-card">
+        <div class="custom-card-head">
+            <i class="fas fa-user fa-3x custom-orange-color"></i>
+            <div class="custom-card-name">Between own accounts</div>
+        </div>
+        <div class="custom-card-description">
+            Payment transfer between own accounts in KKBank.
+        </div>
+        <form style="text-align: center">
+            <button class="custom_btn" asp-controller="Payments" asp-action="BetweenOwnAccounts">
+                <span class="custom_btn__inner">
+                    <span class="custom_btn__slide"></span>
+                    <span class="custom_btn__content">Create new payment <i class="fas fa-marker"></i></span>
+                </span>
+            </button>
+        </form>
+    </div>
+    <div class="custom-card">
+        <div class="custom-card-head">
+            <i class="fas fa-people-arrows fa-3x custom-orange-color"></i>
+            <div class="custom-card-name">To KKBank account</div>
+        </div>
+        <div class="custom-card-description">
+            Payment transfer in BGN or foreign currency to another customer’s account at KKBank.
+        </div>
+        <form style="text-align: center">
+            <button class="custom_btn" asp-controller="Payments" asp-action="InternalTransfer">
+                <span class="custom_btn__inner">
+                    <span class="custom_btn__slide"></span>
+                    <span class="custom_btn__content">Create new payment <i class="fas fa-marker"></i></span>
+                </span>
+            </button>
+        </form>
+    </div>
+    <div class="custom-card">
+        <div class="custom-card-head">
+            <i class="fas fa-archive fa-3x custom-orange-color"></i>
+            <div class="custom-card-name">Archive</div>
+        </div>
+        <div class="custom-card-description">
+            Check the payments placed by your account.
+        </div>
+        <form style="text-align: center">
+            <button class="custom_btn" asp-controller="Payments" asp-action="Archive">
+                <span class="custom_btn__inner">
+                    <span class="custom_btn__slide"></span>
+                    <span class="custom_btn__content">Archive <i class="fas fa-folder-open"></i></span>
+                </span>
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Account
+@model DeleteAccountInputModel
+
+@{ 
+    this.ViewData["Title"] = "Delete account";
+    var accountsItems = this.Model.UserAccounts.Select(x => new SelectListItem(x.Value, x.Key));
+}
+
+<div class="d-flex custom-h3-orange-color justify-content-center">
+    <h3 class="mb-3">Delete Existing Account</h3>
+    <div class="position-relative">
+        <i class="fas fa-info-circle mt-2 ml-2" id="icon"></i>
+        <div id="message">It is allowed to delete account that have a zero balance!</div>
+    </div>
+</div>
+
+<div class="custom-create-account">
+    <form method="post" class="col-md-6 offset-md-3">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="AccountId"></label>
+            <select asp-for="AccountId" asp-items="accountsItems" class="form-control"></select>
+            <span asp-validation-for="AccountId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="d-flex justify-content-end">
+            <input type="submit" class="btn custom-orange-bg-color align-self-end" />
+        </div>
+    </form>
+</div>

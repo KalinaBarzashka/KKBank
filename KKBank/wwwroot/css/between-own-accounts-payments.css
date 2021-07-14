@@ -1,0 +1,80 @@
+﻿.payment-document-style {
+    font-size: 14px;
+    border-radius: 8px;
+    border: 3px solid #d2d2d2;
+    background-color: white;
+    padding: 15px;
+}
+
+.payment-document-style select, .payment-document-style input {
+    border: 1px solid #F27D16;
+}
+
+.payment-document-style .form-group {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.payment-document-style label {
+    min-width: 150px;
+}
+
+.input-validation-error {
+    border: 2px solid #ff435a
+}
+
+.validation-summary-errors {
+    color: #fff;
+    border-radius: 3px;
+    background-color: #ff435a;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.custom_payment_validation {
+    margin-left: 150px;
+    color: #dc3545 !important;
+}
+
+#message {
+    display: none;
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 2px rgb(0 0 0 / 20%);
+    background-color: #F29C50;
+    min-width: 380px;
+    z-index: 1030;
+    white-space: normal;
+    bottom: 0px;
+    left: calc(50% + 20px);
+}
+
+#icon:hover ~ #message {
+    display: block;
+}
+
+
+.amount-currency__subgrid {
+    display: grid;
+    grid-template-columns: 1fr 70px 80px 1fr 2fr;
+    width: 100%;
+}
+
+.iban-currency__subgrid {
+    display: grid;
+    grid-template-columns: 1.3fr 90px 1.8fr;
+    width: 100%;
+}
+
+.currencyExchange__displayBlock {
+    display: block;
+}
+
+.currencyExchange__displayHidden{
+    display: none !important;
+}

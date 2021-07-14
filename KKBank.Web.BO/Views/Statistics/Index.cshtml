@@ -1,0 +1,181 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Statistics
+@model StatisticsViewModel
+
+@{ 
+    this.ViewData["Title"] = "Bank Statistics";
+}
+
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap-extended.min.css">
+<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/fonts/simple-line-icons/style.min.css">
+<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
+<div class="grey-bg container-fluid">
+    <section id="stats-subtitle">
+        <div class="row">
+            <div class="col-12 mt-3 mb-1">
+                <h3 class="text-uppercase custom-orange-color">Bank Statistics</h3>
+                <p class="text-uppercase custom-orange-color">@DateTime.Now</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-6 col-md-12">
+                <div class="card overflow-hidden">
+                    <div class="card-content">
+                        <div class="card-body cleartfix">
+                            <div class="media align-items-stretch">
+                                <div class="align-self-center">
+                                    <i class="icon-user success font-large-2 mr-2"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h4>Total Users</h4>
+                                    <span>Total Bank Users</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <h1>@Model.TotalBankUsers</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-12">
+                <div class="card overflow-hidden">
+                    <div class="card-content">
+                        <div class="card-body cleartfix">
+                            <div class="media align-items-stretch">
+                                <div class="align-self-center">
+                                    <i class="icon-wallet primary font-large-2 mr-2"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h4>Total Accounts</h4>
+                                    <span>Total User Accounts</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <h1>@Model.TotalUserAccounts</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-6 col-md-12">
+                <div class="card overflow-hidden">
+                    <div class="card-content">
+                        <div class="card-body cleartfix">
+                            <div class="media align-items-stretch">
+                                <div class="align-self-center">
+                                    <i class="icon-pencil secondary font-large-2 mr-2"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h4>Total Payment Orders</h4>
+                                    <span>Total Transactions done by users</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <h1>@Model.TotalTransactions</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body cleartfix">
+                            <div class="media align-items-stretch">
+                                <div class="align-self-center">
+                                    <i class="fa fa-coins success font-large-2 mr-2"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h4>Total Currencies</h4>
+                                    <span>Total Types of currencies</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <h1>@Model.TotalCurrencies</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-6 col-md-12">
+                <div class="card overflow-hidden">
+                    <div class="card-content">
+                        <div class="card-body cleartfix">
+                            <div class="media align-items-stretch">
+                                <div class="align-self-center">
+                                    <i class="fa fa-laptop warning font-large-2 mr-2"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h4>Total Requests</h4>
+                                    <span>Total Requests done by users</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <h1>@Model.TotalRequestsByUsers</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body cleartfix">
+                            <div class="media align-items-stretch">
+                                <div class="align-self-center">
+                                    <i class="fa fa-user-check info font-large-2 mr-2"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h4>Total handled Requests</h4>
+                                    <span>Total handled Requests by bank employees</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <h1>@Model.TotalHandledRequests</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body cleartfix">
+                            <div class="media align-items-stretch">
+                                <div class="align-self-center">
+                                    <h1 class="mr-2 danger"><i class="fa fa-euro-sign danger"></i>@Model.TotalMoney</h1>
+                                </div>
+                                <div class="media-body">
+                                    <h4>Total Money</h4>
+                                    <span>Total Money in user accounts</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fa fa-university danger font-large-2"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </section>
+</div>

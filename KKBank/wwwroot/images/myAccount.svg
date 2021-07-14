@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>01 Icons/48px/015-myAccount</title>
+    <desc>Created with Sketch.</desc>
+    <g id="01-Icons/48px/015-myAccount" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Group-15" transform="translate(4.000000, 2.000000)" stroke="#ffffff" stroke-width="2">
+            <path d="M21.4518,26.813 C26.8018,26.813 30.3548,19.697 30.8748,17.895 C30.9118,17.764 31.7128,17.357 31.7788,17.239 C34.6748,12.115 31.5108,11.533 31.5108,11.533 C31.5108,11.533 31.6588,8.833 30.9868,6.296 C30.9868,6.296 29.2898,0 21.4518,0 C13.6138,0 11.9168,6.296 11.9168,6.296 C11.2448,8.833 11.3928,11.533 11.3928,11.533 C11.3928,11.533 8.2278,12.115 11.1238,17.239 C11.1898,17.357 11.9908,17.764 12.0288,17.895 C12.5478,19.697 16.1018,26.813 21.4518,26.813 Z" id="Stroke-1"></path>
+            <path d="M26.363,25.2832 C26.363,25.2832 26.818,26.1682 28.667,27.1272" id="Stroke-3"></path>
+            <path d="M16.5407,25.2832 C16.5407,25.2832 14.5027,27.3032 10.6207,28.5282 C5.1217,30.2632 0.4107,33.5312 -0.0003,42.1532 C-0.0003,42.1532 12.1217,44.3842 24.6687,44.0332" id="Stroke-5"></path>
+            <path d="M30.6686,33.0337 L39.6686,33.0337" id="Stroke-7"></path>
+            <polyline id="Stroke-9" points="38.1686 30.5337 40.6686 33.0337 38.1686 35.5337"></polyline>
+            <path d="M39.6686,40.0337 L30.6686,40.0337" id="Stroke-11"></path>
+            <polyline id="Stroke-13" points="32.1686 42.5337 29.6686 40.0337 32.1686 37.5337"></polyline>
+        </g>
+    </g>
+</svg>

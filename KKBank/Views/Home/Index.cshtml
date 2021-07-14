@@ -1,0 +1,16 @@
+﻿@model KKBank.ViewModels.Home.IndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h3 class="text-center" style="color: #F27D16">Welcome to KK Bank!</h3>
+
+<div class="text-center">
+    <h4 style="color: #F27D16">In this application you can find the following opportunities:</h4>
+    <br />
+    <h5>Add new checking accounts from <a asp-controller="Account" asp-action="Create">here</a>.</h5>
+    <h5>Create payment orders from <a asp-controller="Payments" asp-action="Index">here</a>.</h5>
+    <h5>Check your current balance from <a asp-controller="Account" asp-action="All">here</a>.</h5>
+    <h5>Check your account transactions from <a asp-controller="Transactions" asp-action="Index">here</a>.</h5>
+    <h5>And more!</h5>
+</div>

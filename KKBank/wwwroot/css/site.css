@@ -1,0 +1,162 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+
+body {
+    font-family: "Inter-Regular" !important;
+    background-color: #F5F7FA;
+}
+
+header nav {
+    background-color: #0367A6;
+}
+
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+
+.footer {
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+.card-add-account-img {
+    background-image: url("../new-account-icon.png");
+}
+
+.card-img-container {
+    height: 200px;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #2196f36b;
+}
+
+.request-filter {
+    font-size: 14px;
+    border-radius: 8px;
+    border: 3px solid #d2d2d2;
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.request-filter .form-group {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.request-filter select, .request-filter input {
+    border: 1px solid #F27D16;
+}
+
+.request-filter select:focus {
+    border: 2px solid green;
+}
+
+.request-filter label {
+    width: 140px;
+}
+
+.calendar{
+    position:absolute;
+    z-index: 3;
+    top:27px;
+    left:0;
+    min-width: 400px;
+    display: none;
+}
+
+.kali-form {
+    display: block;
+    width: 100%;
+    height: 50px;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 50px;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+main > h3 {
+    padding-bottom: 10px;
+    padding-top: 30px;
+    color: #F27D16;
+}
+
+.custom-h3-orange-color {
+    padding-bottom: 10px;
+    padding-top: 30px;
+    color: #F27D16;
+}
+
+.custom-orange-bg-color {
+    background-color: #F27D16 !important;
+    color: white !important;
+    border-color: #F27D16 !important;
+}
+
+.custom-orange-color {
+    color: #F27D16;
+}

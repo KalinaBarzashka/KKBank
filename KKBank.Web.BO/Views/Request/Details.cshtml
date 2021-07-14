@@ -1,0 +1,45 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Request
+@model AwaitingApprovalReqViewModel
+
+<h3 class="text-center">New Request</h3>
+
+<div class="custom-request-details">
+
+    <label>Requst Id</label>
+    <input value="@Model.Id" disabled>
+
+    <label>User Name</label>
+    <input value="@Model.Username" disabled>
+
+    <label>Account Name</label>
+    <input value="@Model.AccountName" disabled>
+
+    <label>Request Type Name</label>
+    <input value="@Model.RequestTypeName" disabled>
+
+    <label>Account Type Name</label>
+    <input value="@Model.AccountTypeName" disabled>
+
+    <label>Currency</label>
+    <input value="@Model.Currency" disabled>
+
+    <label>Description</label>
+    <input value="@Model.Description" disabled>
+
+    <label>Status Name</label>
+    <input value="@Model.StatusName" disabled>
+
+    <div></div>
+
+    <div class="d-flex justify-content-end">
+        <form method="post" asp-controller="Request" asp-action="Approve" class="ml-2">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="submit" value="Approve" class="btn btn-outline-primary" style="min-width: 100px" />
+        </form>
+
+        <form method="post" asp-controller="Request" asp-action="Deny" class="ml-2">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="submit" value="Deny" class="btn btn-outline-danger" style="min-width: 100px" />
+        </form>
+    </div>
+</div>

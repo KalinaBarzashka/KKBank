@@ -1,0 +1,21 @@
+﻿.custom-edit-request {
+    display: grid;
+    grid-template-columns: 450px 450px;
+    align-items: center;
+    min-width: 900px;
+    margin: auto;
+}
+
+    .custom-edit-request input {
+        padding: .375rem .75rem;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        padding: 8px 8px 8px 8px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+
+    .custom-edit-request label {
+        margin-bottom: 0px;
+        margin-top: 0px;
+    }

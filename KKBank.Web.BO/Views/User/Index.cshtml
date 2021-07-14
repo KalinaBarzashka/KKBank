@@ -1,0 +1,25 @@
+﻿@{ 
+    this.ViewData["Title"] = "Customer service";
+}
+
+<h3>Users</h3>
+
+<div class="custom-card-container">
+    <div class="custom-card">
+        <div class="custom-card-head">
+            <i class="fas fa-user fa-3x custom-orange-color"></i>
+            <div class="custom-card-name">Cash deposit</div>
+        </div>
+        <div class="custom-card-description">
+            Add money to a user account.
+        </div>
+        <form style="text-align: center">
+            <button class="custom_btn" asp-controller="User" asp-action="AddMoney">
+                <span class="custom_btn__inner">
+                    <span class="custom_btn__slide"></span>
+                    <span class="custom_btn__content">Add money <i class="fas fa-money-check-alt"></i></span>
+                </span>
+            </button>
+        </form>
+    </div>
+</div>

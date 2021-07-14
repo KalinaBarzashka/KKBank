@@ -1,0 +1,312 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Transactions
+@model TransactionsViewModel
+
+@{
+    this.ViewData["Title"] = "Transactions";
+    var userAccountsItems = new List<SelectListItem>();
+    userAccountsItems.AddRange(this.Model.Accounts.Select(x => new SelectListItem(x.Value, x.Key.ToString())).ToList());
+
+    var transactionTypesItems = new List<SelectListItem>();
+    transactionTypesItems.AddRange(this.Model.TransactionTypes.Select(x => new SelectListItem(x.Value, x.Key)).ToList());
+
+    bool isFirstRequest = false;
+    if (Model.LastNRequests == null && Model.ToDate == null)
+    {
+        isFirstRequest = true;
+    }
+}
+
+<h3>Transactions <i class="fas fa-exchange-alt"></i></h3>
+<hr />
+<form class="container" method="post" asp-controller="Transactions" asp-action="Index">
+    <div class="row request-filter">
+        <div class="col-7 d-flex flex-column justify-content-center">
+            <div class="form-group d-flex align-items-center">
+                <label asp-for="AccountsId">Account</label>
+                <select asp-for="AccountsId" asp-items="userAccountsItems" class="form-control"></select>
+                <span asp-validation-for="AccountsId" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex align-items-center">
+                <label>Transactions</label>
+                <select asp-for="TransactionTypeId" asp-items="transactionTypesItems" class="form-control"></select>
+            </div>
+            <div class="form-group d-flex align-items-center">
+                <label asp-for="Details"></label>
+                <input class="form-control" asp-for="Details" type="text" />
+            </div>
+        </div>
+        <div class="col-3 d-flex flex-column">
+            <div class="form-group d-flex align-items-center">
+                <label>
+                    <input id="inputLastN" type="radio" name="FilerType" value="1"
+                           @(Model.LastNRequests != null ? "checked" : null)
+                           @(isFirstRequest == true ? "checked" : null)> Last
+                </label>
+                <input asp-for="LastNRequests" name="LastNRequests"
+                       id="valueLastN" value="@(Model.LastNRequests != null ? Model.LastNRequests : 10)"
+                       type="text" size="4" disabled=@(Model.ToDate != null ? "disabled" : null)>
+            </div>
+
+            <div class="form-group d-flex align-items-center">
+                <label><input id="inputToDate" type="radio" name="FilerType" value="2" @(Model.ToDate != null ? "checked" : null)> For</label>
+                <div class="position-relative">
+                    <input name="ToDate" id="valueToDate" value="@(Model.ToDate != null ? Model.ToDate : @DateTime.Now.ToString("dd/MM/yyyy"))"
+                           type="text" size="11" readonly
+                           @(Model.LastNRequests != null ? "disabled" : null)
+                           @(isFirstRequest == true ? "disabled" : null)>
+                    <div id="color-calendar" class="calendar"></div>
+                </div>
+            </div>
+
+            @Html.ValidationMessageFor(n => n.LastNRequests, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-2 d-flex flex-column justify-content-end">
+            <input type="submit" class="btn custom-orange-bg-color" />
+        </div>
+    </div>
+</form>
+
+@if (Model.Transactions.Count() > 0)
+{
+    <div class="tableFixHead">
+        <table>
+            <thead>
+                <tr>
+                    <th onclick="sortByDate()">Date</th>
+                    <th onclick="sortByDetails()">Details</th>
+                    <th onclick="sortByPayerPayee()">Payer/Payee</th>
+                    <th onclick="sortByDebit()">Debit</th>
+                    <th onclick="sortByCredit()">Credit</th>
+                </tr>
+            </thead>
+            <tbody id="transactions">
+                @*@foreach (var transaction in Model.Transactions)
+                {
+                    <tr>
+                        <td>@transaction.CreatedOn.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <td>@transaction.Details</td>
+                        <td>@transaction.PayerPayee</td>
+                        <td class="text-right">@(transaction.Debit == 0M ? "" : transaction.Debit)</td>
+                        <td class="text-right">@(transaction.Credit == 0M ? "" : transaction.Credit)</td>
+                    </tr>
+                }*@
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <div class="text-right">
+        <form method="post">
+            <input type="hidden" value="@Model.AccountsId" name="accountId" />
+            @foreach (var transaction in Model.Transactions)
+            {
+                <input type="hidden" value="@transaction.Id" name="transactions" />
+            }
+            <input type="submit" class="btn custom-orange-bg-color" asp-controller="Transactions" asp-action="Export" value="Export To Excel" />
+        </form>
+    </div>
+}
+else
+{
+    <p class="text-danger">No transactions found!</p>
+}
+
+
+@section Scripts {
+    <script>
+        var transactionsData = @Json.Serialize(Model.Transactions);
+        Render(transactionsData);
+
+        function Render(transactions) {
+            let transactionsEl = document.getElementById("transactions");
+            let html = "";
+
+            for (let key in transactions) {
+                let transaction = transactions[key];
+                html += `<tr>
+                    <td>${new Intl.DateTimeFormat("bg-BG", { dateStyle: 'medium', timeStyle: 'medium' }).format(new Date(transaction.createdOn))}</td>
+                    <td>${transaction.details}</td>
+                    <td>${transaction.payerPayee}</td>
+                    <td class="text-right">${transaction.debit == 0 ? "" : transaction.debit.toFixed(2)}</td>
+                    <td class="text-right">${transaction.credit == 0 ? "" : transaction.credit.toFixed(2)}</td>
+                </tr>`;
+            }
+
+            transactionsEl.innerHTML = html;
+        }
+
+        var dateSortMode = "DESC";
+        var detailsSortMode = "DESC";
+        var payerPayeeSortMode = "DESC";
+        var debitSortMode = "DESC";
+        var creditSortMode = "DESC";
+
+        function sortByDate() {
+            let sortedCollection = [];
+
+            if (dateSortMode == "DESC") {
+                sortedCollection = transactionsData.sort(function (a, b) {
+                    return new Date(a.createdOn) - new Date(b.createdOn);
+                });
+                dateSortMode = "ASC";
+            } else if (dateSortMode == "ASC") {
+                sortedCollection = transactionsData.sort(function (a, b) {
+                    return new Date(b.createdOn) - new Date(a.createdOn);
+                });
+                dateSortMode = "DESC";
+            }
+            Render(sortedCollection);
+        }
+
+        function sortByDetails() {
+            let sortedCollection = [];
+
+            if (detailsSortMode == "DESC") {
+                sortedCollection = transactionsData.sort(function (a, b) {
+                    if (a.details > b.details) {
+                        return 1;
+                    } else if (a.details < b.details) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                detailsSortMode = "ASC";
+            } else if (detailsSortMode == "ASC") {
+                sortedCollection = transactionsData.sort(function (a, b) {
+                    if (a.details > b.details) {
+                        return -1;
+                    } else if (a.details < b.details) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+                detailsSortMode = "DESC";
+            }
+            Render(sortedCollection);
+        }
+
+        function sortByPayerPayee() {
+            let sortedCollection = [];
+
+            if (payerPayeeSortMode == "DESC") {
+                sortedCollection = transactionsData.sort(function (a, b) {
+                    if (a.payerPayee > b.payerPayee) {
+                        return 1;
+                    } else if (a.payerPayee < b.payerPayee) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                payerPayeeSortMode = "ASC";
+            } else if (payerPayeeSortMode == "ASC") {
+                sortedCollection = transactionsData.sort(function (a, b) {
+                    if (a.payerPayee > b.payerPayee) {
+                        return -1;
+                    } else if (a.payerPayee < b.payerPayee) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+                payerPayeeSortMode = "DESC";
+            }
+            Render(sortedCollection);
+        }
+
+        function sortByDebit() {
+            let sortedCollection = [];
+
+            if (debitSortMode == "DESC") {
+                sortedCollection = transactionsData.sort(function (a, b) {
+                    if (a.debit > b.debit) {
+                        return 1;
+                    } else if (a.debit < b.debit) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                debitSortMode = "ASC";
+            } else if (debitSortMode == "ASC") {
+                sortedCollection = transactionsData.sort(function (a, b) {
+                    if (a.debit > b.debit) {
+                        return -1;
+                    } else if (a.debit < b.debit) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+                debitSortMode = "DESC";
+            }
+            Render(sortedCollection);
+        }
+
+        function sortByCredit() {
+            let sortedCollection = [];
+
+            if (creditSortMode == "DESC") {
+                sortedCollection = transactionsData.sort(function (a, b) {
+                    if (a.credit > b.credit) {
+                        return 1;
+                    } else if (a.credit < b.credit) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                creditSortMode = "ASC";
+            } else if (creditSortMode == "ASC") {
+                sortedCollection = transactionsData.sort(function (a, b) {
+                    if (a.credit > b.credit) {
+                        return -1;
+                    } else if (a.credit < b.credit) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+                creditSortMode = "DESC";
+            }
+            Render(sortedCollection);
+        }
+
+        var inputLastN = document.getElementById("inputLastN");
+        var valueLastN = document.getElementById("valueLastN");
+        var inputToDate = document.getElementById("inputToDate");
+        var valueToDate = document.getElementById("valueToDate");
+
+        var calendar = new Calendar({
+            calendarSize: 'small',
+        });
+
+        inputLastN.addEventListener("change", function () {
+            if (inputLastN.checked) {
+                valueLastN.disabled = false;
+                valueToDate.disabled = true;
+            }
+        });
+
+        inputToDate.addEventListener("change", function () {
+            if (inputToDate.checked) {
+                valueLastN.disabled = true;
+                valueToDate.disabled = false;
+            }
+        });
+
+        valueToDate.addEventListener("focusin", function () {
+            calendar.calendar.style.display = "block";
+        });
+
+        calendar.dateChanged = function () {
+            var date = calendar.getSelectedDate();
+            var options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+            date = new Intl.DateTimeFormat('en-GB', options).format(date);
+
+            valueToDate.value = date;
+            calendar.calendar.style.display = "none";
+        }
+    </script>
+}

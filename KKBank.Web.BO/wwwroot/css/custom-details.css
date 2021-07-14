@@ -1,0 +1,57 @@
+﻿.custom-request-details {
+    display: grid;
+    grid-template-columns: 350px 400px;
+    align-items: center;
+    width: 750px;
+    margin: auto;
+}
+
+.custom-request-details input {
+    padding: .375rem .75rem;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    padding: 8px 8px 8px 8px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.custom-request-details label {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.add-money-search {
+    display: grid;
+    grid-template-columns: 250px 250px;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+}
+
+.add-money-search input {
+    padding: .375rem .75rem;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    padding: 8px 8px 8px 8px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.custom-add-money-details {
+    display: grid;
+    grid-template-columns: 250px 250px;
+    align-items: center;
+}
+
+.custom-add-money-details label {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.custom-add-money-details input {
+    padding: .375rem .75rem;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    padding: 8px 8px 8px 8px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}

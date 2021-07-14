@@ -1,0 +1,13 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Account
+@model string
+
+@{ 
+    this.ViewData["Title"] = "Successful Operation";
+}
+
+<h3>Successful Operation!</h3>
+
+<form method="post" asp-controller="User" asp-action="AddMoney">
+    <input type="hidden" value="@Model" name="EGN" />
+    <input type="submit" value="Check accounts availability here!" class="btn btn-link" />
+</form>

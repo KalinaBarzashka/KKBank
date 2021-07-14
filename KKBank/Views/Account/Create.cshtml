@@ -1,0 +1,36 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Account
+@model CreateAccountInputModel
+
+@{
+    this.ViewData["Title"] = "Add new account";
+    var currencyItems = this.Model.CurrencyItems.Select(x => new SelectListItem(x.Value, x.Key));
+    var accountTypesItems = this.Model.AccountTypesItems.Select(x => new SelectListItem(x.Value, x.Key));
+}
+
+<h3 class="text-center">Add new Account</h3>
+
+<div class="custom-create-account">
+    <form method="post" class="col-md-6 offset-md-3">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AccountTypeId"></label>
+            <select asp-for="AccountTypeId" asp-items="accountTypesItems" class="form-control"></select>
+            <span asp-validation-for="AccountTypeId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CurrencyId"></label>
+            @*<vc:CategoriesDropDown name="CategoryId"></vc:CategoriesDropDown>*@
+            <select asp-for="CurrencyId" asp-items="currencyItems" class="form-control"></select>
+            <span asp-validation-for="CurrencyId" class="text-danger"></span>
+        </div>
+        <div class="d-flex justify-content-end">
+            <input type="submit" class="btn custom-orange-bg-color align-self-end" />
+        </div>
+    </form>
+</div>

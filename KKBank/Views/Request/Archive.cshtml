@@ -1,0 +1,307 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Request
+@model RequestsViewModel<RequestViewModel>
+
+@{
+    var requestTypesItems = new List<SelectListItem>();
+    requestTypesItems.Add(new SelectListItem()
+    {
+        Text = "Select request type",
+        Value = "0"
+    });
+    requestTypesItems.AddRange(this.Model.RequestTypesItems.Select(x => new SelectListItem(x.Value, x.Key)).ToList());
+
+
+    var statusItems = new List<SelectListItem>();
+    statusItems.Add(new SelectListItem()
+    {
+        Text = "Select status type",
+        Value = "0"
+    });
+    statusItems.AddRange(this.Model.StatusItems.Select(x => new SelectListItem(x.Value, x.Key)).ToList());
+
+    bool isFirstRequest = false;
+    if (Model.LastNRequests == null && Model.ToDate == null)
+    {
+        isFirstRequest = true;
+    }
+}
+
+<h3>Request Archive</h3>
+
+<div class="request-filter">
+    <form method="post" asp-controller="Request" asp-action="Archive">
+        <div class="row">
+            <div class="col-5 d-flex flex-column justify-content-center">
+                <div class="form-group d-flex align-items-center">
+                    <label asp-for="RequestTypeId">Type of Request</label>
+                    <select asp-for="RequestTypeId" asp-items="requestTypesItems" class="form-control"></select>
+                    <span asp-validation-for="RequestTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group d-flex align-items-center">
+                    <label asp-for="StatusId">Status</label>
+                    <select asp-for="StatusId" asp-items="statusItems" class="form-control"></select>
+                    <span asp-validation-for="StatusId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-5 d-flex flex-column justify-content-center">
+                <div class="form-group d-flex align-items-center">
+                    <label>
+                        <input id="inputLastN" type="radio" name="FilerType" value="1"
+                               @(Model.LastNRequests != null ? "checked" : null)
+                               @(isFirstRequest == true ? "checked" : null)> Last
+                    </label>
+                    <input asp-for="LastNRequests" name="LastNRequests"
+                           id="valueLastN" value="@(Model.LastNRequests != null ? Model.LastNRequests : 10)"
+                           type="text" size="4" disabled=@(Model.ToDate != null ? "disabled" : null)>
+                    @Html.ValidationMessageFor(n => n.LastNRequests, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group d-flex align-items-center">
+                    <label><input id="inputToDate" type="radio" name="FilerType" value="2" @(Model.ToDate != null ? "checked" : null)> For</label>
+                    <div class="position-relative">
+                        <input name="ToDate" id="valueToDate" value="@(Model.ToDate != null ? Model.ToDate : @DateTime.Now.ToString("dd/MM/yyyy"))"
+                               type="text" size="11" readonly
+                               @(Model.LastNRequests != null ? "disabled" : null)
+                               @(isFirstRequest == true ? "disabled" : null)>
+                        <div id="color-calendar" class="calendar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-2 d-flex flex-column justify-content-end">
+                <input type="submit" class="btn custom-orange-bg-color" />
+            </div>
+        </div>
+    </form>
+</div>
+
+@if (Model.Requests.Count() > 0)
+{
+    <div class="tableFixHead">
+        <table>
+            <thead>
+                <tr>
+                    <th onclick="sortByRequestId()">Request Id</th>
+                    <th onclick="sortByRequestType()">Request Type</th>
+                    <th onclick="sortByStatus()">Status</th>
+                    <th onclick="sortByCreatedOn()">Created On</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="requests">
+                @*    @foreach (var request in Model.Requests)
+                    {
+                        <tr>
+                            <td>@request.Id</td>
+                            <td>@request.RequestTypeName</td>
+                            <td>@request.StatusName</td>
+                            <td>@request.CreatedOn.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            <td>
+                                @if (request.StatusName == "Awaiting Approval")
+                                {
+                                    <form method="post" asp-controller="Request" asp-action="Close" class="ml-2">
+                                        <input type="hidden" name="id" value="@request.Id" />
+                                        <button type="submit" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    } *@
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <div class="text-right">
+        <form method="post">
+            @foreach (var request in Model.Requests)
+            {
+                <input type="hidden" value="@request.Id" name="requests" />
+            }
+            <input type="submit" class="btn custom-orange-bg-color" asp-controller="Request" asp-action="Export" value="Export To Excel" />
+        </form>
+    </div>
+}
+else
+{
+    <p class="text-danger">No requests found!</p>
+}
+
+@section Scripts {
+    <script>
+        var requestsData = @Json.Serialize(Model.Requests);
+        Render(requestsData);
+
+        function Render(requests) {
+            let requestsEl = document.getElementById("requests");
+            let html = "";
+
+            for (let key in requests) {
+                let request = requests[key];
+                html += `<tr>
+                            <td>${request.id}</td>
+                            <td>${request.requestTypeName}</td>
+                            <td>${request.statusName}</td>
+                            <td>${new Intl.DateTimeFormat("bg-BG", { dateStyle: 'medium', timeStyle: 'medium' }).format(new Date(request.createdOn))}</td>
+                            <td>`;
+                if (request.statusName == "Awaiting Approval") {
+                    html += `<form method="post" class="ml-2" action="/Request/Close">
+                                <input type="hidden" name="id" value="${request.id}" />
+                                <button type="submit" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash-alt"></i></button>
+                             </form>
+                             <form method="post" class="ml-2" action="/Request/Edit">
+                                <input type="hidden" name="id" value="${request.id}" />
+                                <button type="submit" class="btn btn-outline-danger btn-rounded"><i class="fas fa-edit"></i></button>
+                             </form>`;
+                }
+                html += `</td></tr>`;
+            }
+
+            requestsEl.innerHTML = html;
+        }
+
+        var requestIdSortMode = "DESC";
+        var requestTypeSortMode = "DESC";
+        var statusSortMode = "DESC";
+        var createdOnSortMode = "DESC";
+
+        function sortByRequestId() {
+            let sortedCollection = [];
+
+            if (requestIdSortMode == "DESC") {
+                sortedCollection = requestsData.sort(function (a, b) {
+                    if (a.id > b.id) {
+                        return 1;
+                    } else if (a.id < b.id) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                requestIdSortMode = "ASC";
+            } else if (requestIdSortMode == "ASC") {
+                sortedCollection = requestsData.sort(function (a, b) {
+                    if (a.id > b.id) {
+                        return -1;
+                    } else if (a.id < b.id) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+                requestIdSortMode = "DESC";
+            }
+            Render(sortedCollection);
+        }
+
+        function sortByRequestType() {
+            let sortedCollection = [];
+
+            if (requestTypeSortMode == "DESC") {
+                sortedCollection = requestsData.sort(function (a, b) {
+                    if (a.requestTypeName > b.requestTypeName) {
+                        return 1;
+                    } else if (a.requestTypeName < b.requestTypeName) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                requestTypeSortMode = "ASC";
+            } else if (requestTypeSortMode == "ASC") {
+                sortedCollection = requestsData.sort(function (a, b) {
+                    if (a.requestTypeName > b.requestTypeName) {
+                        return -1;
+                    } else if (a.requestTypeName < b.requestTypeName) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+                requestTypeSortMode = "DESC";
+            }
+            Render(sortedCollection);
+        }
+
+        function sortByStatus() {
+            let sortedCollection = [];
+
+            if (statusSortMode == "DESC") {
+                sortedCollection = requestsData.sort(function (a, b) {
+                    if (a.statusName > b.statusName) {
+                        return 1;
+                    } else if (a.statusName < b.statusName) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                statusSortMode = "ASC";
+            } else if (statusSortMode == "ASC") {
+                sortedCollection = requestsData.sort(function (a, b) {
+                    if (a.statusName > b.statusName) {
+                        return -1;
+                    } else if (a.statusName < b.statusName) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+                statusSortMode = "DESC";
+            }
+            Render(sortedCollection);
+        }
+
+        function sortByCreatedOn() {
+            let sortedCollection = [];
+
+            if (createdOnSortMode == "DESC") {
+                sortedCollection = requestsData.sort(function (a, b) {
+                    return new Date(a.createdOn) - new Date(b.createdOn);
+                });
+                createdOnSortMode = "ASC";
+            } else if (createdOnSortMode == "ASC") {
+                sortedCollection = requestsData.sort(function (a, b) {
+                    return new Date(b.createdOn) - new Date(a.createdOn);
+                });
+                createdOnSortMode = "DESC";
+            }
+            Render(sortedCollection);
+        }
+
+        var inputLastN = document.getElementById("inputLastN");
+        var valueLastN = document.getElementById("valueLastN");
+        var inputToDate = document.getElementById("inputToDate");
+        var valueToDate = document.getElementById("valueToDate");
+
+        var calendar = new Calendar({
+            calendarSize: 'small',
+        });
+
+        inputLastN.addEventListener("change", function () {
+            if (inputLastN.checked) {
+                valueLastN.disabled = false;
+                valueToDate.disabled = true;
+            }
+        });
+
+        inputToDate.addEventListener("change", function () {
+            if (inputToDate.checked) {
+                valueLastN.disabled = true;
+                valueToDate.disabled = false;
+            }
+        });
+
+        valueToDate.addEventListener("focusin", function () {
+            calendar.calendar.style.display = "block";
+        });
+
+        calendar.dateChanged = function () {
+            var date = calendar.getSelectedDate();
+            var options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+            date = new Intl.DateTimeFormat('en-GB', options).format(date);
+
+            valueToDate.value = date;
+            calendar.calendar.style.display = "none";
+        }
+    </script>
+}

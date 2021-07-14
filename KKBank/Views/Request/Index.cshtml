@@ -1,0 +1,59 @@
+﻿@{
+    this.ViewData["Title"] = "Requests";
+}
+
+<h3>Requests <i class="fas fa-scroll" id="icon"></i></h3>
+
+<div class="custom-card-container">
+    <div class="custom-card">
+        <div class="custom-card-head">
+            <i class="fas fa-plus fa-3x custom-orange-color"></i>
+            <div class="custom-card-name">Create new account</div>
+        </div>
+        <div class="custom-card-description">
+            This request allows you to create and add a new checking account to your profile.
+        </div>
+        <form style="text-align: center">
+            <button class="custom_btn" asp-controller="Account" asp-action="Create">
+                <span class="custom_btn__inner">
+                    <span class="custom_btn__slide"></span>
+                    <span class="custom_btn__content">Create Account <i class="fas fa-wallet"></i></span>
+                </span>
+            </button>
+        </form>
+    </div>
+    <div class="custom-card">
+        <div class="custom-card-head">
+            <i class="fas fa-minus fa-3x custom-orange-color"></i>
+            <div class="custom-card-name">Delete existing account</div>
+        </div>
+        <div class="custom-card-description">
+            This request allows you to delete a checking account from your profile.
+        </div>
+        <form style="text-align: center">
+            <button class="custom_btn" asp-controller="Account" asp-action="Delete">
+                <span class="custom_btn__inner">
+                    <span class="custom_btn__slide"></span>
+                    <span class="custom_btn__content">Delete Account <i class="fas fa-trash-alt"></i></span>
+                </span>
+            </button>
+        </form>
+    </div>
+    <div class="custom-card">
+        <div class="custom-card-head">
+            <i class="fas fa-archive fa-3x custom-orange-color"></i>
+            <div class="custom-card-name">Archive</div>
+        </div>
+        <div class="custom-card-description">
+            Check the requests placed by your account.
+        </div>
+        <form style="text-align: center">
+            <button class="custom_btn" asp-controller="Request" asp-action="Archive">
+                <span class="custom_btn__inner">
+                    <span class="custom_btn__slide"></span>
+                    <span class="custom_btn__content">Archive <i class="fas fa-folder-open"></i></span>
+                </span>
+            </button>
+        </form>
+    </div>
+</div>

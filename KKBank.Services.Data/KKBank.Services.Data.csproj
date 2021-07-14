@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KKBank.Data.Common\KKBank.Data.Common.csproj" />
+    <ProjectReference Include="..\KKBank.Data.Models\KKBank.Data.Models.csproj" />
+    <ProjectReference Include="..\KKBank.Data\KKBank.Data.csproj" />
+    <ProjectReference Include="..\KKBank.Web.ViewModels\KKBank.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

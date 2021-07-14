@@ -1,0 +1,63 @@
+﻿@using KKBank.Web.ViewModels.ViewModels.Account
+@model AddMoneyToAccountViewModel
+
+@{ 
+    this.ViewData["Title"] = "Add money To Account";
+}
+
+<h3 class="text-center">Add Money To Account</h3>
+
+<form method="post" asp-controller="User" asp-action="AddMoneyToAccount" class="ml-2">
+    <div class="custom-request-details">
+
+        <label>Account Id</label>
+        <input class="form-control" value="@Model.Account.Id" disabled>
+
+        <label>Account Name</label>
+        <input class="form-control" value="@Model.Account.Name" disabled>
+
+        <label>Account Type Name</label>
+        <input class="form-control" value="@Model.Account.AccountTypeName" disabled>
+
+        <label>Available</label>
+        <input class="form-control text-right" value="@Model.Account.Available" disabled>
+
+        <label>BlockedАmount</label>
+        <input class="form-control text-right" value="@Model.Account.BlockedАmount" disabled>
+
+        <label>Balance</label>
+        <input class="form-control text-right" value="@Model.Account.Balance" disabled>
+
+        <label>IBAN</label>
+        <input class="form-control" value="@Model.Account.IBAN" disabled>
+
+        <label>Currency</label>
+        <input class="form-control" value="@Model.Account.CurrencyAbbreviation" disabled>
+
+        <label asp-for="@Model.Amount">Amount</label>
+        <input class="form-control text-right" asp-for="@Model.Amount" onblur="AmountFixed(this)" value="0.00">
+        <span asp-validation-for="@Model.Amount" class="text-danger"></span>
+
+        <input type="hidden" asp-for="@Model.AccountId" />
+        <input type="hidden" asp-for="@Model.EGN" />
+
+        <div class="d-flex justify-content-end">
+            <input type="submit" value="Add" class="btn custom-orange-bg-color" style="min-width: 100px" />
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+    <script>
+        function AmountFixed(el) {
+            var amountValue = Number(el.value.replace(',', '.'));
+
+            if (isNaN(amountValue)) {
+                el.value = "0.00";
+            } else {
+                el.value = amountValue.toFixed(2);
+            }
+        }
+    </script>
+}

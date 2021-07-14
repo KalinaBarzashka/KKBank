@@ -1,0 +1,21 @@
+﻿@{ 
+    this.ViewData["Title"] = "Settings";
+}
+
+<h3>Settings</h3>
+
+<div class="d-flex">
+    <div class="card ml-1 mr-1" style="width: 18rem;">
+        <img class="">
+        <div class="card-body">
+            <h5 class="card-title">Create new role</h5>
+            <p class="card-text">Create new role for the applications.</p>
+
+            <a class="btn btn-primary" asp-controller="Settings" asp-action="CreateRole">Create Role</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+</div>
