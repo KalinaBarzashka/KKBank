@@ -1,14 +1,14 @@
-## ![#1589F0]Table of content
-### KKBank - Online banking platform for individuals
-- Overview
-- Functionalities and Roles
-### KKBank BO - Back Office platform for bank employees
-- Overview
-- Functionalities and Roles
-### Architecture
-### Technology Stack
-    
-# ![#1589F0]KKBank
+#### Table of Contents
+- 1 KKBank - Online banking platform for individuals
+  - 1.1 Overview
+  - 1.2 Functionalities and Roles
+- 2 KKBank BO - Back Office platform for bank employees
+  - 2.1 Overview
+  - 2.2 Functionalities and Roles
+- 3 Architecture
+- 4 Technology Stack
+
+# KKBank
 
 KKBank is my defense project for a bachelor's degree in business informatics. 
 The software is powered by ASP.NET Core MVC backend and supports a MSSQL database. The project overview, functionalities, architecture and technology stack is reviewed bellow.  
