@@ -1,20 +1,18 @@
-## [#1589F0]Table of content
+## ![#1589F0]Table of content
 ### KKBank - Online banking platform for individuals
-#### Overview
-#### Functionalities and Roles
-#### Architecture
+- Overview
+- Functionalities and Roles
 ### KKBank BO - Back Office platform for bank employees
-#### Overview
-#### Functionalities and Roles
-#### Architecture
+- Overview
+- Functionalities and Roles
+### Architecture
 ### Technology Stack
-
-  
     
-# [#1589F0]KKBank
+# ![#1589F0]KKBank
 
 KKBank is my defense project for a bachelor's degree in business informatics. 
-The software is powered by ASP.NET Core MVC backend and supports a MSSQL database. The project overview, functionalities, architecture and technology stack is reviewed bellow.
+The software is powered by ASP.NET Core MVC backend and supports a MSSQL database. The project overview, functionalities, architecture and technology stack is reviewed bellow.  
+![Screenshot](public/KKBankMenu.png?raw=true "KKBankMenu")
 
 ## :pencil: Overview
 
@@ -51,6 +49,7 @@ KKBank as online banking platform, offers only one role - the role of the end cu
 ![Screenshot](public/requestArchive.png?raw=true "RequestArchive")
 ### :pushpin: Check your account/s availability/ies  
 ![Screenshot](public/accountBalance.png?raw=true "AccountBalance")
+![Screenshot](public/accountBalance1.png?raw=true "AccountBalance1")
 ### :pushpin: Transfer money between your accounts in KKBank
 ![Screenshot](public/payments-betweenOwnAccounts.png?raw=true "TransferBetweenOwnAccounts")
 ### :pushpin: Transfer money to other accounts withing KK Bank  
@@ -64,4 +63,15 @@ KKBank as online banking platform, offers only one role - the role of the end cu
 ### :pushpin: Common menus for Payment Orders functionalities
 ![Screenshot](public/paymentOrdersMenu.png?raw=true "PaymentOrdersMenu")
 
-## :hammer: Architecture
+# ![#1589F0]KKBank BO
+
+# :hammer: Architecture
+The KKBank and KKBank BO platforms are based on the .NET technology stack.
+Both platforms communicate with MSSQL database via service layer.
+
+# :gear: Technology Stack
+- C# and .NET 5 MVC
+- JS, HTML, CSS, Bootstrap
+- Razor View Engine
+- MSSQL Server
+- TSQL
