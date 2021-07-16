@@ -12,7 +12,7 @@
 
 KKBank is my defense project for a bachelor's degree in business informatics. 
 The software is powered by ASP.NET Core MVC backend and supports a MSSQL database. The project overview, functionalities, architecture and technology stack is reviewed bellow.  
-![Screenshot](public/KKBankMenu.png?raw=true "KKBankMenu")
+![Screenshot](public/bankMenu.png?raw=true "BankMenu")
 
 ## :pencil: Overview
 
