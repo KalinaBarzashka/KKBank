@@ -63,7 +63,35 @@ KKBank as online banking platform, offers only one role - the role of the end cu
 ### :pushpin: Common menus for Payment Orders functionalities
 ![Screenshot](public/paymentOrdersMenu.png?raw=true "PaymentOrdersMenu")
 
-# ![#1589F0]KKBank BO
+# KKBank BO
+
+KKBank BO is also a part from my defense project for a bachelor's degree in business informatics. 
+The software is powered by ASP.NET Core MVC backend and supports a MSSQL database. The project overview, functionalities, architecture and technology stack is reviewed bellow.  
+![Screenshot](public/BObankMenu.png?raw=true "BOBankMenu")
+
+## :pencil: Overview
+
+KKBank BO is an internal banking platform used from the KK Bank employees.
+
+## :computer: Functionalities and Roles
+KKBank BO offers two roles:
+- Bank employee
+- Admin role (Bank employees manager)
+
+### :pushpin: Processing of new requests for opening and closing bank accounts (both roles)  
+![Screenshot](public/newRequests1.png?raw=true "NewRequests1")
+![Screenshot](public/newRequests2.png?raw=true "NewRequests2")
+
+### :pushpin: Request Archive (both roles)  
+![Screenshot](public/requestArchiveBO.png?raw=true "BORequestArchive")
+
+### :pushpin: Add money to user account / Cash Deposit (both roles)  
+![Screenshot](public/cashDeposit1.png?raw=true "CashDeposit1")
+![Screenshot](public/cashDeposit2.png?raw=true "CashDeposit2")
+![Screenshot](public/cashDeposit3.png?raw=true "CashDeposit3")
+
+### :pushpin: Bank Statistics (admin role only)  
+![Screenshot](public/bankStatistics.png?raw=true "BankStatistics")
 
 # :hammer: Architecture
 The KKBank and KKBank BO platforms are based on the .NET technology stack.
